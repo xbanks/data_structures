@@ -1,5 +1,12 @@
+/*
+*	A Queue is a First in First Out data structure that is a type of Singularly Linked List.
+*	Adding to a Queue is done at the tail end of the list while removing data from a queue is done from the front or head of the queue
+*/
+
+
 #ifndef _QUEUE_H
 #define _QUEUE_H
+
 
 typedef struct DataNode
 {
@@ -29,7 +36,7 @@ Queue *simple_enqueue(Queue *queue, char c, int i);
 QueueNode *create_queue_node();
 QueueNode *dequeue();
 QueueNode *peek(Queue *queue);
-void clear_node(QueueNode *queueNode);
+void clear_queue_node(QueueNode *queueNode);
 void print_queue(Queue *queue);
 void print_queue_helper(QueueNode *queueNode);
 void print_queue_node(QueueNode *queueNode);
@@ -57,19 +64,15 @@ Queue *clear_queue(Queue *queue)
 {
 	if(queue == NULL)
 		return NULL;
-	QueueNode *queueNode;
 
 	while(queue->head != NULL)
-	{
-		queueNode = dequeue(queue);
-		clear_node(queueNode);
-	}
+		clear_queue_node( dequeue( queue ) );
 
 	free(queue);
 	return NULL;
 }
 
-void clear_node(QueueNode *queueNode)
+void clear_queue_node(QueueNode *queueNode)
 {
 	free(queueNode->dataNode);
 	free(queueNode);
@@ -89,6 +92,8 @@ QueueNode *create_queue_node()
 }
 
 // Interaction Methods
+
+// Adds data to the tail end of the queue.
 Queue *enqueue(Queue *queue, QueueNode *queueNode)
 {
 	if(queue == NULL)
@@ -101,9 +106,11 @@ Queue *enqueue(Queue *queue, QueueNode *queueNode)
 		queue->tail->next = queueNode;
 		queue->tail = queueNode;
 	}
+
 	return queue;
 }
 
+// An easier way of adding to the queue without having to manually create a QueueNode
 Queue *simple_enqueue(Queue *queue, char c, int i)
 {
 	if(queue == NULL)
@@ -116,6 +123,7 @@ Queue *simple_enqueue(Queue *queue, char c, int i)
 	return enqueue(queue, queueNode);
 }
 
+// Removes and returns a node from the head of the list
 QueueNode *dequeue(Queue *queue)
 {
 	if(queue == NULL || queue->head == NULL)
@@ -127,6 +135,7 @@ QueueNode *dequeue(Queue *queue)
 	return queueNode;
 }
 
+// Simply returns (Without removing) the head of the Queue
 QueueNode *peek(Queue *queue)
 {
 	return (queue == NULL) ? NULL : queue->head;
@@ -154,10 +163,7 @@ void print_queue_helper(QueueNode *queueNode)
 void print_queue_node(QueueNode *queueNode)
 {
 	if(queueNode == NULL)
-	{
-		printf("NULL\n");
 		return;
-	}
 
 	char char_data = queueNode->dataNode->char_data;
 	int int_data = queueNode->dataNode->int_data;
